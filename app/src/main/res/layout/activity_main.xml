@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+>
+    <TableRow android:gravity="center">
+        <Button
+                android:id="@+id/main_createClass"
+                android:layout_weight="3"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="新建品类"
+        />
+        <Button
+                android:id="@+id/main_createOrder"
+                android:layout_weight="3"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="新建订单"
+        />
+        <Button
+                android:id="@+id/main_endOrder"
+                android:layout_weight="3"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="结束订单"
+        />
+
+    </TableRow>
+    <TableRow android:id="@+id/main_createClass_tablerow" android:gravity="center" android:visibility="gone">
+        <TableLayout
+                android:layout_weight="1"
+        >
+            <TableRow android:gravity="center" android:layout_weight="1">
+                <TextView
+                        android:text="Country:"
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:layout_height="wrap_content"
+                        android:textSize="24sp"
+                        android:gravity="center"
+                />
+                <EditText
+                        android:id="@+id/main_createClass_country"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:maxLength="10"
+                        android:gravity="center"
+                />
+            </TableRow>
+            <TableRow android:gravity="center" android:layout_weight="1">
+                <TextView
+                        android:text="Farm:"
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:layout_height="wrap_content"
+                        android:textSize="24sp"
+                        android:gravity="center"
+                />
+                <EditText
+                        android:id="@+id/main_createClass_farm"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:maxLength="10"
+                        android:hint="请输入庄园、处理厂、合作社或小农名称"
+                        android:gravity="center"
+                />
+            </TableRow>
+            <TableRow android:gravity="center" android:layout_weight="1">
+                <TextView
+                        android:text="Class:"
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:layout_height="wrap_content"
+                        android:textSize="24sp"
+                        android:gravity="center"
+                />
+                <EditText
+                        android:id="@+id/main_createClass_class"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:maxLength="10"
+                        android:hint="请输入处理法和品种，例如：水洗卡杜拉"
+                        android:gravity="center"
+                />
+            </TableRow>
+            <TableRow android:gravity="center" android:layout_weight="1">
+                <Button
+                        android:id="@+id/main_createClass_check"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="查重"
+                />
+                <Button
+                        android:id="@+id/main_createClass_submit"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="提交"
+                />
+            </TableRow>
+        </TableLayout>
+
+    </TableRow>
+    <TableRow android:id="@+id/main_createOrder_tablerow" android:gravity="center">
+        <TableLayout android:layout_weight="1">
+            <TableRow>
+                <Button
+                        android:id="@+id/main_createOrder_getData"
+                        android:layout_weight="3"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:text="获取数据"
+                />
+            </TableRow>
+            <TableRow android:gravity="center" android:layout_weight="1">
+                <TextView
+                        android:text="Country:"
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:layout_height="wrap_content"
+                        android:textSize="24sp"
+                        android:gravity="center"
+                />
+                <Spinner
+                        android:id="@+id/main_createOrder_country"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:gravity="center"
+                />
+            </TableRow>
+            <TableRow android:gravity="center" android:layout_weight="1">
+                <TextView
+                        android:text="Farm:"
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:layout_height="wrap_content"
+                        android:textSize="24sp"
+                        android:gravity="center"
+                />
+                <Spinner
+                        android:id="@+id/main_createOrder_farm"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:maxLength="10"
+                        android:gravity="center"
+                />
+            </TableRow>
+            <TableRow android:gravity="center" android:layout_weight="1">
+                <TextView
+                        android:text="Class:"
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:layout_height="wrap_content"
+                        android:textSize="24sp"
+                        android:gravity="center"
+                />
+                <Spinner
+                        android:id="@+id/main_createOrder_class"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:maxLength="10"
+                        android:gravity="center"
+                />
+            </TableRow>
+            <TableRow android:gravity="center" android:layout_weight="1">
+                <TextView
+                        android:text="Weight:"
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:layout_height="wrap_content"
+                        android:textSize="24sp"
+                        android:gravity="center"
+                />
+                <EditText
+                        android:id="@+id/main_createOrder_weight"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:maxLength="10"
+                        android:hint="重量单位为g"
+                        android:gravity="center"
+                />
+            </TableRow>
+            <TableRow>
+                <Button
+                        android:id="@+id/main_createOrder_submit"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:text="开单"
+
+                />
+
+            </TableRow>
+            <TableRow>
+                <TextView
+                        android:text="温馨提示：获取数据按钮只需要点击一次就可以连续开单"
+                />
+            </TableRow>
+
+        </TableLayout>
+
+
+    </TableRow>
+
+</TableLayout>
