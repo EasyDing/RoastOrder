@@ -104,10 +104,15 @@
                         android:text="提交"
                 />
             </TableRow>
+            <TableRow>
+                <TextView
+                        android:text="温馨提示：提交以前请先查重"
+                />
+            </TableRow>
         </TableLayout>
 
     </TableRow>
-    <TableRow android:id="@+id/main_createOrder_tablerow" android:gravity="center">
+    <TableRow android:id="@+id/main_createOrder_tablerow" android:gravity="center"  android:visibility="gone">
         <TableLayout android:layout_weight="1">
             <TableRow>
                 <Button
