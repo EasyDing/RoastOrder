@@ -12,7 +12,14 @@ public class Data {
     private String country;
     private String farm;
     private String classes;
-    private int remarks;
+    private int classRemarks;
+
+    //order
+    private int orderId;
+    private int cId;
+    private String weight;
+    private int flag;
+    private int orderRemarks;
 
 
     public int getClassId() {
@@ -47,11 +54,52 @@ public class Data {
         this.classes = classes;
     }
 
-    public int getRemarks() {
-        return remarks;
+    public int getClassRemarks() {
+        return classRemarks;
     }
 
-    public void setRemarks(int remarks) {
-        this.remarks = remarks;
+    public void setClassRemarks(int classRemarks) {
+        this.classRemarks = classRemarks;
+    }
+
+    public int getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
+    }
+
+    public int getcId() {
+        return cId;
+    }
+
+    public void setcId(int cId) {
+        this.cId = cId;
+    }
+
+    public String getWeight() {
+        return weight;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
+    }
+
+    public int getFlag() {
+        return flag;
+    }
+
+    public void setFlag(int flag) {
+        this.flag = flag;
+    }
+
+    public int getOrderRemarks() {
+        return orderRemarks;
+    }
+
+    public void setOrderRemarks(int orderRemarks) {
+        this.orderRemarks = orderRemarks;
     }
 }
+

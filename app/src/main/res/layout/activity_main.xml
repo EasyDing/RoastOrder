@@ -6,6 +6,13 @@
 >
     <TableRow android:gravity="center">
         <Button
+                android:id="@+id/createConnect"
+                android:layout_weight="3"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="连接"
+        />
+        <Button
                 android:id="@+id/main_createClass"
                 android:layout_weight="3"
                 android:layout_height="wrap_content"
@@ -193,6 +200,7 @@
                         android:maxLength="10"
                         android:hint="重量单位为g"
                         android:gravity="center"
+                        android:inputType="numberSigned"
                 />
             </TableRow>
             <TableRow>
