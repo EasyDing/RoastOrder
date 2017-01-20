@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.*;
+import com.rm.easy.ro.roastorder.Adapter.OrderListAdapter;
 import com.rm.easy.ro.roastorder.Adapter.SelectSpringAdapter;
 import com.rm.easy.ro.roastorder.iface.HttpCallbackListener;
 import com.rm.easy.ro.roastorder.jsonBean.JsonGeneral;
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final int GETFARMDATE_SUCCESS = 8;
     public static final int GETCLASSDATE_SUCCESS = 9;
     public static final int CREATEORDER_SUCCESS = 10;
+    public static final int GETORDERDATA_SUCCESS = 11;
 
 
 
@@ -74,8 +76,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText roastWeight;
     private Button orderSubmit;
 
+    //Init End widget
+    private Button pullOrderData;
+    private ListView orderList;
+
     private TableRow createClassTR;
     private TableRow createOrderTR;
+    private TableRow endOrderTR;
 
 
 
@@ -87,6 +94,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         createClass = (Button)findViewById(R.id.main_createClass);
         createOrder = (Button)findViewById(R.id.main_createOrder);
         connect = (Button)findViewById(R.id.createConnect);
+        endOrder = (Button)findViewById(R.id.main_endOrder);
+
         classCheck = (Button)findViewById(R.id.main_createClass_check);
         classSubmit = (Button)findViewById(R.id.main_createClass_submit);
         country = (EditText)findViewById(R.id.main_createClass_country);
@@ -100,10 +109,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         roastWeight = (EditText)findViewById(R.id.main_createOrder_weight);
         orderSubmit = (Button)findViewById(R.id.main_createOrder_submit);
 
+        pullOrderData = (Button)findViewById(R.id.main_endOrder_getData);
+        orderList = (ListView)findViewById(R.id.main_endOrder_listView);
+
+
 
 
         createClassTR = (TableRow)findViewById(R.id.main_createClass_tablerow);
         createOrderTR = (TableRow)findViewById(R.id.main_createOrder_tablerow);
+        endOrderTR = (TableRow)findViewById(R.id.main_endOrder_tablerow);
 
 
 
@@ -117,6 +131,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         classSubmit.setOnClickListener(this);
         pullData.setOnClickListener(this);
         orderSubmit.setOnClickListener(this);
+        endOrder.setOnClickListener(this);
+        pullOrderData.setOnClickListener(this);
 
         //set spring listener
         selectCountry.setOnItemSelectedListener(this);
@@ -182,6 +198,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 case CREATEORDER_SUCCESS:
                     Log.i(TAG,"Mainactivity-开单成功");
                     break;
+                case GETORDERDATA_SUCCESS:
+                    OrderListAdapter adapter = new OrderListAdapter(MainActivity.this, R.layout.order_list_item_listview,jg.getData());
+                    orderList.setAdapter(adapter);
+                    break;
 
 
                 case COMMON_FAIL:
@@ -231,17 +251,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()){
             case R.id.main_createClass:
                 createOrderTR.setVisibility(View.GONE);
+                endOrderTR.setVisibility(View.GONE);
                 createClassTR.setVisibility(View.VISIBLE);
                 break;
             case R.id.main_createOrder:
                 createClassTR.setVisibility(View.GONE);
+                endOrderTR.setVisibility(View.GONE);
                 createOrderTR.setVisibility(View.VISIBLE);
+                break;
+            case R.id.main_endOrder:
+                createOrderTR.setVisibility(View.GONE);
+                createClassTR.setVisibility(View.GONE);
+                endOrderTR.setVisibility(View.VISIBLE);
                 break;
             case R.id.createConnect:
                 String connectAddress = HOST+"connect.php";
                 String connectReqStr = "";
                 sendRequest(connectAddress, connectReqStr, CONNECT_SUCCESS, CONNECT_FAIL);
                 break;
+                //Create Class Begin
             case R.id.main_createClass_check:
                 String checkAddress = HOST+"check_class.php";
                 String checkReqStr = "country=" + country.getText() + "&farm=" + farm.getText() + "&classes=" + classes.getText();
@@ -252,6 +280,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String createClassSubmitReqStr = "country=" + country.getText() + "&farm=" + farm.getText() + "&classes=" + classes.getText();
                 sendRequest(createClassSubmitAddress, createClassSubmitReqStr, CREATE_CLASS_SUCCESS, CREATE_CLASS_FAIL);
                 break;
+                //Create class End & Create Order Begin
             case R.id.main_createOrder_getData:
                 String getDataAddress = HOST+"getData.php";
                 String getDataReqStr = "var=country";
@@ -263,6 +292,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String createOrderReqStr = "country=" + selectCountry.getSelectedItem().toString() + "&farm=" + selectFarm.getSelectedItem().toString() +
                         "&classes=" + selectClass.getSelectedItem().toString() + "&weight=" + roastWeight.getText();
                 sendRequest(createOrderAddress,createOrderReqStr,CREATEORDER_SUCCESS,COMMON_FAIL);
+                break;
+                //Create Order End & End Order Begin
+            case R.id.main_endOrder_getData:
+                String endOrderGetDataAddress = HOST+"getOrderData.php";
+                String endOrderGetDataReqStr = "";
+                sendRequest(endOrderGetDataAddress,endOrderGetDataReqStr,GETORDERDATA_SUCCESS,COMMON_FAIL);
                 break;
         }
 
@@ -276,14 +311,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String getFarmDataAddress = HOST+"getData.php";
                 String getFarmDataReqStr = "var=farm&country="+countryList.get(i).toString();
                 sendRequest(getFarmDataAddress,getFarmDataReqStr,GETFARMDATE_SUCCESS,COMMON_FAIL);
-                Toast.makeText(MainActivity.this,countryList.get(i).toString(),Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this,countryList.get(i).toString(),Toast.LENGTH_SHORT).show();
                 setCountryName(countryList.get(i).toString());
                 break;
             case R.id.main_createOrder_farm:
                                 String getClassDataAddress = HOST+"getData.php";
                 String getClassDataReqStr = "var=class&farm="+farmList.get(i).toString()+"&country="+getCountryName();
                 sendRequest(getClassDataAddress,getClassDataReqStr,GETCLASSDATE_SUCCESS,COMMON_FAIL);
-                Toast.makeText(MainActivity.this,farmList.get(i).toString(),Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this,farmList.get(i).toString(),Toast.LENGTH_SHORT).show();
                 break;
         }
 

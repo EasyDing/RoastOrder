@@ -35,6 +35,7 @@
         />
 
     </TableRow>
+    <!-- 新建类别 Begin  -->
     <TableRow android:id="@+id/main_createClass_tablerow" android:gravity="center" android:visibility="gone">
         <TableLayout
                 android:layout_weight="1"
@@ -72,7 +73,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="6"
                         android:maxLength="10"
-                        android:hint="请输入庄园、处理厂、合作社或小农名称"
+                        android:hint="请输入庄园、处理厂、合作社、小农或贸易商名称"
                         android:gravity="center"
                 />
             </TableRow>
@@ -119,6 +120,8 @@
         </TableLayout>
 
     </TableRow>
+    <!-- 新建类别 End   -->
+    <!-- 新建订单 Begin   -->
     <TableRow android:id="@+id/main_createOrder_tablerow" android:gravity="center"  android:visibility="gone">
         <TableLayout android:layout_weight="1">
             <TableRow>
@@ -224,5 +227,34 @@
 
 
     </TableRow>
+    <!-- 新建订单 End  -->
+    <!--  结单  Begin -->
+    <TableRow android:id="@+id/main_endOrder_tablerow" android:gravity="center" android:visibility="gone">
+        <TableLayout android:layout_weight="1">
+            <TableRow>
+                <Button
+                        android:id="@+id/main_endOrder_getData"
+                        android:text="获取订单数据"
+                        android:layout_weight="3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                />
+            </TableRow>
+            <TableRow>
+                <ListView
+                        android:id="@+id/main_endOrder_listView"
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                >
+                </ListView>
+            </TableRow>
+
+        </TableLayout>
+
+
+    </TableRow>
+    <!--  结单 End -->
 
 </TableLayout>

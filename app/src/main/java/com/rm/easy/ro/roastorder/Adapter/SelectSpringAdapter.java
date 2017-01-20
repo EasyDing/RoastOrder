@@ -27,7 +27,7 @@ public class SelectSpringAdapter extends ArrayAdapter<String> {
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = LayoutInflater.from(getContext()).inflate(resourceId,null);
         TextView text = (TextView)convertView.findViewById(android.R.id.text1);
-        text.setText(list.get(position).toString());
+        text.setText(list.get(position).toString()+"g");
         return convertView;
     }
 }
