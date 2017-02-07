@@ -201,7 +201,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="6"
                         android:maxLength="10"
-                        android:hint="重量单位为g"
+                        android:hint="半磅填写0.5，一磅填写1"
                         android:gravity="center"
                         android:inputType="numberSigned"
                 />
@@ -217,7 +217,7 @@
                 />
 
             </TableRow>
-            <TableRow>
+            <TableRow android:layout_gravity="center">
                 <TextView
                         android:text="温馨提示：获取数据按钮只需要点击一次就可以连续开单"
                 />
@@ -241,6 +241,12 @@
                 />
             </TableRow>
             <TableRow>
+                <TextView
+                        android:text="温馨提示：长时间没操作请先点击连接确保网络畅通。"
+                        android:layout_gravity="center"
+                />
+            </TableRow>
+            <TableRow>
                 <ListView
                         android:id="@+id/main_endOrder_listView"
                         android:layout_width="0dp"
@@ -250,6 +256,7 @@
                 >
                 </ListView>
             </TableRow>
+
 
         </TableLayout>
 

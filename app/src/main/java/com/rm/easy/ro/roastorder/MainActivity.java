@@ -1,7 +1,9 @@
 package com.rm.easy.ro.roastorder;
 
+import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +12,7 @@ import android.widget.*;
 import com.rm.easy.ro.roastorder.Adapter.OrderListAdapter;
 import com.rm.easy.ro.roastorder.Adapter.SelectSpringAdapter;
 import com.rm.easy.ro.roastorder.iface.HttpCallbackListener;
+import com.rm.easy.ro.roastorder.jsonBean.Data;
 import com.rm.easy.ro.roastorder.jsonBean.JsonGeneral;
 import com.rm.easy.ro.roastorder.util.GsonUtil;
 import com.rm.easy.ro.roastorder.util.HttpUtil;
@@ -18,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener, AdapterView.OnItemClickListener{
 
     public static final String HOST = "http://rmcoffee.imwork.net/rmRO/";
 
@@ -35,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final int GETCLASSDATE_SUCCESS = 9;
     public static final int CREATEORDER_SUCCESS = 10;
     public static final int GETORDERDATA_SUCCESS = 11;
+    public static final int ENDORDER_SUCCESS = 12;
 
 
 
@@ -83,6 +87,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TableRow createClassTR;
     private TableRow createOrderTR;
     private TableRow endOrderTR;
+
+    //OS Var
+    private JsonGeneral globalJG;
 
 
 
@@ -138,6 +145,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         selectCountry.setOnItemSelectedListener(this);
         selectFarm.setOnItemSelectedListener(this);
         selectClass.setOnItemSelectedListener(this);
+
+        //set listview listener
+        orderList.setOnItemClickListener(this);
     }
 
 
@@ -145,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void handleMessage(Message msg) {
             JsonGeneral jg = (JsonGeneral)msg.obj;
-            switch (msg.what){
+                        switch (msg.what){
                 case CHECK_SUCCESS:
                     Toast.makeText(MainActivity.this,"未通过检查："+jg.getMessage(), Toast.LENGTH_SHORT).show();
                     break;
@@ -197,12 +207,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     break;
                 case CREATEORDER_SUCCESS:
                     Log.i(TAG,"Mainactivity-开单成功");
+                    Toast.makeText(MainActivity.this,"开单成功",Toast.LENGTH_SHORT).show();
                     break;
                 case GETORDERDATA_SUCCESS:
                     OrderListAdapter adapter = new OrderListAdapter(MainActivity.this, R.layout.order_list_item_listview,jg.getData());
                     orderList.setAdapter(adapter);
                     break;
-
+                case ENDORDER_SUCCESS:
+                    Toast.makeText(MainActivity.this,"结单成功",Toast.LENGTH_SHORT).show();
+                    break;
 
                 case COMMON_FAIL:
                     Toast.makeText(MainActivity.this,"失败:" + jg.getMessage(),Toast.LENGTH_SHORT).show();
@@ -212,35 +225,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     };
 
 
-    //http
 
-    private void sendRequest(String add, String reqStr, final int successTag, final int failTag){
-        HttpUtil.sendHttpRequest(add, reqStr, new HttpCallbackListener() {
-            @Override
-            public void onFinish(String response) {
-                JsonGeneral jsonGenerals = GsonUtil.parseJsonWithGson(response,JsonGeneral.class);//Json data is processed using Gson
-                Log.i(TAG,"MainActivity-"+jsonGenerals.getStatus());
-                //判断请求响应
-                Message msg = new Message();
-                if(jsonGenerals.getStatus().equals("Success")){
-                    msg.what = successTag;
-                    msg.obj = jsonGenerals;
-                }else{
-                    msg.what = failTag;
-                    msg.obj = jsonGenerals;
-                }
-                handler.sendMessage(msg);
-            }
-
-            @Override
-            public void onError(Exception e) {
-                Message msg = new Message();
-                msg.what = CONNECT_ERROR;
-                handler.sendMessage(msg);
-                e.printStackTrace();
-            }
-        });
-    }
 
 
 
@@ -315,7 +300,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 setCountryName(countryList.get(i).toString());
                 break;
             case R.id.main_createOrder_farm:
-                                String getClassDataAddress = HOST+"getData.php";
+                String getClassDataAddress = HOST+"getData.php";
                 String getClassDataReqStr = "var=class&farm="+farmList.get(i).toString()+"&country="+getCountryName();
                 sendRequest(getClassDataAddress,getClassDataReqStr,GETCLASSDATE_SUCCESS,COMMON_FAIL);
                 //Toast.makeText(MainActivity.this,farmList.get(i).toString(),Toast.LENGTH_SHORT).show();
@@ -323,10 +308,78 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
-
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+
+        final Data data = getGlobalJG().getData().get(i);
+
+        Log.i(TAG,"MainActivity-"+i+"-"+data.getClassId());
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("订单管理");
+        builder.setMessage("请确认：\n<"+data.getCountry().toString()+data.getFarm().toString()+data.getClasses().toString()+">\n是否烘焙完成。");
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Log.i(TAG, "MainActivity-取消按钮-" + i);
+                dialogInterface.dismiss();
+            }
+        });
+        builder.setPositiveButton("结单", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Log.i(TAG, "MainActivity-结单按钮-" + i);
+                String endOrderAddress = HOST+"endOrder.php";
+                String endOrderReqStr = "cId="+data.getClassId();
+                sendRequest(endOrderAddress,endOrderReqStr,ENDORDER_SUCCESS,COMMON_FAIL);
+                dialogInterface.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+
+
+    }
+
+
+
+    //http
+
+    private void sendRequest(String add, String reqStr, final int successTag, final int failTag){
+        HttpUtil.sendHttpRequest(add, reqStr, new HttpCallbackListener() {
+            @Override
+            public void onFinish(String response) {
+                JsonGeneral jsonGenerals = GsonUtil.parseJsonWithGson(response,JsonGeneral.class);//Json data is processed using Gson
+                Log.i(TAG,"MainActivity-"+jsonGenerals.getStatus());
+                //判断请求响应
+                Message msg = new Message();
+                if(jsonGenerals.getStatus().equals("Success")){
+                    msg.what = successTag;
+                    msg.obj = jsonGenerals;
+                    setGlobalJG(jsonGenerals);
+                }else{
+                    msg.what = failTag;
+                    msg.obj = jsonGenerals;
+                }
+                handler.sendMessage(msg);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Message msg = new Message();
+                msg.what = CONNECT_ERROR;
+                handler.sendMessage(msg);
+                e.printStackTrace();
+            }
+        });
     }
 
     //Getter & Setter
@@ -362,5 +415,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void setCountryName(String countryName) {
         this.countryName = countryName;
+    }
+
+    public JsonGeneral getGlobalJG() {
+        return globalJG;
+    }
+
+    public void setGlobalJG(JsonGeneral globalJG) {
+        this.globalJG = globalJG;
     }
 }
