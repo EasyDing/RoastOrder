@@ -6,6 +6,7 @@ import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.*;
@@ -129,6 +130,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
+
         //set button linstener
 
         createClass.setOnClickListener(this);
@@ -148,6 +150,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //set listview listener
         orderList.setOnItemClickListener(this);
+
+        //让EditText支持小数点输入
+        roastWeight.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
     }
 
 

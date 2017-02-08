@@ -203,7 +203,8 @@
                         android:maxLength="10"
                         android:hint="半磅填写0.5，一磅填写1"
                         android:gravity="center"
-                        android:inputType="numberSigned"
+                        android:inputType="numberDecimal"
+
                 />
             </TableRow>
             <TableRow>
